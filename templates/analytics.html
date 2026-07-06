@@ -221,17 +221,29 @@
 
                         <li class="list-group-item">
                             <b>Top Hiring Company:</b>
+                            {% if not top.empty %}
                             {{ top.index[0] }}
+                            {% else %}
+                            No Data
+                            {% endif %}
                         </li>
 
                         <li class="list-group-item">
                             <b>Highest Salary Company:</b>
+                            {% if not salary["Highest Package"].empty %}
                             {{ salary["Highest Package"].idxmax() }}
+                            {% else %}
+                            No Data
+                            {% endif %}
                         </li>
 
                         <li class="list-group-item">
                             <b>Highest Salary:</b>
+                            ₹ {% if not salary["Highest Package"].empty %}
                             ₹ {{ salary["Highest Package"].max() }}
+                            {% else %}
+                            ₹ 0
+                            {% endif %}
                         </li>
 
                     </ul>

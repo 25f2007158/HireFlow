@@ -1,7 +1,11 @@
 import matplotlib
-matplotlib.use('Agg') # It was caused by Matplotlib using a GUI backend (Tkinter) inside a Flask threaded environment. I resolved it by switching Matplotlib to the Agg backend, which is non-GUI and suitable for server-side image generation.
+matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
+import os
+
+# Create the folder if it doesn't exist
+os.makedirs("static/images", exist_ok=True)
 
 def application_chart_funnel(funnel):
     labels=["Waiting","Shortlisted","Rejected"]
@@ -15,15 +19,18 @@ def application_chart_funnel(funnel):
     plt.ylabel("Number OF Applications")
     plt.tight_layout()
     plt.savefig("static/images/funnel.png")
-    plt.close()
+    plt.close("all")
 def top_companies_chart(top):
+    if top.empty:
+        return
+    
     plt.figure(figsize=(8,5))
     plt.barh(top.index,top.values)
     plt.title("Top Hiring Companies")
     plt.xlabel("Shortlisted Students")
     plt.tight_layout()
     plt.savefig("static/images/top_companies.png")
-    plt.close()
+    plt.close("all")
 def department_chart(department):
     plt.figure(figsize=(8,5))
     plt.barh(department.index,department.values)
@@ -31,7 +38,7 @@ def department_chart(department):
     plt.ylabel("Applications")
     plt.tight_layout()
     plt.savefig("static/images/department_chart.png")
-    plt.close()
+    plt.close("all")
 def average_salary_chart(avg_salary):
     plt.figure(figsize=(8,5))
     plt.bar(avg_salary.index,avg_salary.values)
@@ -47,7 +54,7 @@ def average_salary_chart(avg_salary):
     plt.savefig(
         "static/images/salary_chart.png"
     )
-    plt.close()
+    plt.close("all")
 
 def highest_salary_chart(highest_salary):
 
@@ -72,7 +79,7 @@ def highest_salary_chart(highest_salary):
         "static/images/highest_salary_chart.png"
     )
 
-    plt.close()
+    plt.close("all")
 
 def job_role_chart(jobs):
 
@@ -97,7 +104,7 @@ def job_role_chart(jobs):
         "static/images/job_role_chart.png"
     )
 
-    plt.close()
+    plt.close("all")
 
 
 
@@ -129,5 +136,5 @@ def monthly_trend_chart(monthly):
         "static/images/monthly_trend_chart.png"
     )
 
-    plt.close()
+    plt.close("all")
 

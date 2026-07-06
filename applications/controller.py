@@ -3,6 +3,7 @@ from flask import Flask,render_template,request,redirect,session
 from flask import current_app as app  #will not show circular import error 
 from .models import *
 from datetime import datetime
+import traceback
 from applications.analysis.data_loader import load_data
 from applications.analysis.metrics import * 
 from applications.analysis.charts import *
@@ -348,61 +349,56 @@ def create_company_profile():
         return redirect("/company")
 
     return render_template("create_company_profile.html")
+
+@app.route("/analytics")
 @app.route("/analytics")
 def analytics():
-    #data loaded because i wanted to show this in frontend
 
     students, drives, applications, companies = load_data()
 
     funnel = application_funnel(applications)
+    top = top_companies(drives, applications, companies)
+    department = department_wise_applications(students, applications)
+    salary = avg_salary_by_company(drives, companies)
+    jobs = job_title(drives)
+    monthly = monthly_application_trend(applications)
 
-    top = top_companies(
-        drives,
-        applications,
-        companies
-    )
-
-    department = department_wise_applications(
-        students,
-        applications
-    )
-
-    salary = avg_salary_by_company(
-        drives,
-        companies
-    )
-
-    jobs = job_title(
-        drives
-    )
-
-    monthly = monthly_application_trend(
-        applications
-    )
-    #for charts
+    print("1")
     application_chart_funnel(funnel)
+
+    print("2")
     top_companies_chart(top)
+
+    print("3")
     department_chart(department)
+
+    print("4")
     average_salary_chart(
         salary["Average Package"]
     )
 
+    print("5")
     highest_salary_chart(
         salary["Highest Package"]
     )
 
+    print("6")
     job_role_chart(jobs)
+
+    print("7")
     monthly_trend_chart(monthly)
-    
 
+    print("8")
 
-    return render_template(
-        "analytics.html",
-
-        funnel=funnel,
-        top=top,
-        department=department,
-        salary=salary,
-        jobs=jobs,
-        monthly=monthly
-    )
+    try:
+        return render_template(
+            "analytics.html",
+            funnel=funnel,
+            top=top,
+            department=department,
+            salary=salary,
+            jobs=jobs,
+            monthly=monthly
+        )
+    except Exception:
+        return f"<pre>{traceback.format_exc()}</pre>"
