@@ -7,7 +7,6 @@ app = None
 def create_app():
     app = Flask(__name__)  # we can use flask functions when we call app variable
     app.secret_key = 'super_secret_unpredictable_key_string'
-    app.debug = True
     app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///database.db'
     db.init_app(app) #connects db to flask app
     app.app_context().push()  # activates Flask environment manually so db can work
