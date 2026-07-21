@@ -239,10 +239,10 @@
 
                         <li class="list-group-item">
                             <b>Highest Salary:</b>
-                            ₹ {% if not salary["Highest Package"].empty %}
-                            ₹ {{ salary["Highest Package"].max() }}
+                             {% if not salary["Highest Package"].empty %}
+                             {{ salary["Highest Package"].max() }}
                             {% else %}
-                            ₹ 0
+                             0
                             {% endif %}
                         </li>
 
